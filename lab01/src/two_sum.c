@@ -8,6 +8,16 @@ int two_sum(const int* nums, int n, int target, int* out_i, int* out_j) {
     //  - store indices in *out_i and *out_j
     //  - return 1 if found; otherwise return 0
 
+    for (int i = 0; i < n; i++) {
+        for (int j = i + 1; j < n; j++) {
+            if (nums[i] + nums[j] == target) { // check if sum equals target
+                // return indices
+                *out_i = i;
+                *out_j = j;
+                return 1;
+            }
+        }
+    }
     return 0;
 }
 
