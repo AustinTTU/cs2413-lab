@@ -14,9 +14,19 @@
 //Explanation: The arrays we are merging are [1,2,3] and [2,5,6].
 
 void merge(int* nums1, int nums1Size, int m, int* nums2, int nums2Size, int n) {
-
- // TODO: implement
-
-
-
+    if (nums2Size != n){
+        return;
+    }
+    for (int i = n-1; i >= 0; i--) { // merge the arrays into nums1
+        nums1[i+m] = nums2[i];
+    }
+    for (int i = 0; i < nums1Size; i++) { // sort nums1 via bubble sort
+        for (int j = 0; j < nums1Size-i-1; j++) {
+            if (nums1[j] > nums1[j+1]) {
+                int temp = nums1[j+1];
+                nums1[j+1] = nums1[j];
+                nums1[j] = temp;
+            }
+        }
+    }
 }
