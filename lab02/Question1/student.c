@@ -28,6 +28,49 @@
 #include <stdbool.h>
 #include <stddef.h>  // size_t
 #include <string.h>  // strlen
+#include <stdlib.h>
+#include <stdio.h>
+
+typedef struct StringNode {
+    char ch;
+    struct StringNode* next;
+} StringNode;
+
+StringNode* head = NULL;
+
+void push(char ch) {
+    StringNode* temp = malloc(sizeof(StringNode));
+    temp->ch = ch;
+    temp->next = head;
+    head = temp;
+}
+
+void pop() {
+    if (head == NULL) {
+        return;
+    }
+    StringNode* temp = head;
+    head = head->next;
+    free(temp);
+}
+
+char peek() {
+    return head->ch;
+}
+
+void print_string() {
+    StringNode* trav = head;
+    while (trav != NULL) {
+        printf("%c", trav->ch);
+        trav = trav->next;
+    }
+}
+
+static void clear_stack(void) {
+    while (head != NULL) {
+        pop();
+    }
+}
 
 bool isValid(const char *s) {
     // TODO: Implement using a stack.
@@ -54,6 +97,58 @@ bool isValid(const char *s) {
     // Note:
     // - Input contains only bracket characters, per the prompt.
 
+    if (s == NULL) // NULL case
+        return false;
+
+    clear_stack(); // reset stack
+
+    int i = 0;
+    while (s[i] != '\0') { // go through whole string (until null character)
+        if (s[i] == '{' || s[i] == '(' || s[i] == '[') { // push left bracket
+            push(s[i]);
+        }
+        else {
+            if (head == NULL) { // if nothing is pushed, ie: s = '}', then just return
+                (void)s;
+                return false;
+            }
+            char character = peek(); // get top character
+            switch (s[i]) { // if char corresponds, ie: '(' = ')', then pop stack. Otherwise, return false.
+                case '}':
+                    if (character == '{') {
+                        pop();
+                    }
+                    else {
+                        (void)s;
+                        return false;
+                    }
+                    break;
+                case ')':
+                    if (character == '(') {
+                        pop();
+                    }
+                    else {
+                        (void)s;
+                        return false;
+                    }
+                    break;
+                case ']':
+                    if (character == '[') {
+                        pop();
+                    }
+                    else {
+                        (void)s;
+                        return false;
+                    }
+            }
+        }
+        i++;
+    }
+    if (head != NULL) {
+        (void)s;
+        return false;
+    }
+
     (void)s; // remove after implementing
-    return false; // placeholder
+    return true;
 }
