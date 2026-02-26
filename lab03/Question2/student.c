@@ -14,4 +14,17 @@
 
 struct ListNode* swapPairs(struct ListNode* head) {
       // TODO: implement
+      struct ListNode dummy;
+      dummy.val = 0;
+      dummy.next = head;
+      struct ListNode* prev = &dummy;
+      while (prev->next != NULL && prev->next->next != NULL) {
+            struct ListNode *a = prev->next;
+            struct ListNode *b = a->next;
+            a->next = b->next;
+            b->next = a;
+            prev->next = b;
+            prev = a;
+      }
+      return dummy.next;
 }
