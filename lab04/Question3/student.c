@@ -55,7 +55,16 @@ struct TreeNode {
     struct TreeNode *right;
 };
 
+int pathNumber(struct TreeNode* root, int current) {
+    if (root == NULL) return 0;
+    current = current * 10 + root->val;
+    if (root->left==NULL && root->right==NULL) {
+        return current;
+    }
+    return pathNumber(root->left, current) + pathNumber(root->right, current);
+}
 
 int sumNumbers(struct TreeNode* root) {
       // TODO: implement
+    return pathNumber(root, 0);
 }
