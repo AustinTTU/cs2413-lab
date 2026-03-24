@@ -48,8 +48,17 @@ struct TreeNode {
     struct TreeNode *right;
 };
 
-
+bool checkSymmetric(struct TreeNode* leftTree, struct TreeNode* rightTree) {
+  if (leftTree == NULL && rightTree == NULL) return true;
+  else if (leftTree == NULL || rightTree == NULL) return false;
+  if (leftTree->val != rightTree->val) return false;
+  else return checkSymmetric(leftTree->right, rightTree->left) && checkSymmetric(leftTree->left, rightTree->right);
+}
 
 bool isSymmetric(struct TreeNode* root) {
   // TODO: implement
+  if (root == NULL) return true;
+  if ((root->left == NULL) && (root->right == NULL)) return true;
+  else if (root->left && root->right) return checkSymmetric(root->left, root->right);
+  return false;
 }
