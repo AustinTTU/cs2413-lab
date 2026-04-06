@@ -64,9 +64,25 @@ whose sum equals target.
 */
 int* twoSum(int* nums, int numsSize, int target, int* returnSize) {
     /* Write your code here */
+    Node* table[TABLE_SIZE] = {0}; // create empty table
 
+    for (int i = 0; i < numsSize; i++) {
+        int complement = target - nums[i];
+        int result_index;
+
+        if (find(table, complement, &result_index)) { // check if complement in table, if so create and return result array (i + complement)
+            int* result = malloc(2 * sizeof(int));
+            *returnSize = 2;
+            result[0] = result_index, result[1] = i;
+            freeTable(table);
+            return result;
+        }
+        insert(table, nums[i], i); // insert new number in table
+    }
+
+    freeTable(table);
     *returnSize = 0;
-    return NULL;
+    return NULL; // twoSum target not found
 }
 
 /*
@@ -74,7 +90,8 @@ Optional helper: compute a hash index for a key.
 */
 static int hash(int key) {
     /* Write your code here if you use this helper */
-    return 0;
+    if (key < 0) key = -key;
+    return key % TABLE_SIZE; // <-- hashing function
 }
 
 /*
@@ -82,6 +99,11 @@ Optional helper: insert (key, value) into the hash table.
 */
 static void insert(Node* table[], int key, int value) {
     /* Write your code here if you use this helper */
+    int index = hash(key);
+    Node* newNode = malloc(sizeof(Node));
+    newNode->key = key, newNode-> value = value; // assign key-value
+    newNode->next = table[index]; // put in index's linked list
+    table[index] = newNode; // update head
 }
 
 /*
@@ -91,6 +113,14 @@ Otherwise return 0.
 */
 static int find(Node* table[], int key, int* value) {
     /* Write your code here if you use this helper */
+    int index = hash(key);
+    Node* curr = table[index];
+    while(curr != NULL) { // check linked list of index
+        if (curr->key == key) { // if found, return true and derefence value pointer and update it
+            *value = curr->value;
+            return 1;
+        }
+    }
     return 0;
 }
 
@@ -99,4 +129,12 @@ Optional helper: free all memory used by the hash table.
 */
 static void freeTable(Node* table[]) {
     /* Write your code here if you use this helper */
+    for (int i = 0; i < TABLE_SIZE; i++) { // go index by index and free each node in each linked list
+        Node* curr = table[i];
+        while (curr != NULL) {
+            Node* temp = curr;
+            curr = curr->next;
+            free(temp);
+        }
+    }
 }
