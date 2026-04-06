@@ -13,7 +13,15 @@
 int count_isolated(Graph* g) {
     // TODO: implement
     // return -1;
-   
+    int counter = 0;
+    for (int col = 0; col < MAX_NODES; col++){
+        int degree = 0;
+        for (int row = 0; row < MAX_NODES; row++) {
+            degree += g->adj[row][col];
+        }
+        if (degree == 0) counter++;
+    }
+    return counter;
 }
 
 
