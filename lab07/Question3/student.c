@@ -32,9 +32,47 @@ Notes:
 - The sorting should be done in ascending order.
 */
 
+void quickSortRecursive(int arr[], int low, int high);
+int parition(int arr[], int low, int high);
+
 void quickSort(int arr[], int size) {
     // TODO: implement quick sort
     (void)arr;
     (void)size;
+    int low = 0;
+    int high = size - 1;
+    quickSortRecursive(arr, low, high);
+}
+
+void quickSortRecursive(int arr[], int low, int high) {
+    if (low < high) {
+        int pivot = parition(arr, low, high);
+        quickSortRecursive(arr, low, pivot-1);
+        quickSortRecursive(arr, pivot+1, high);
+    }
+}
+
+void swap(int* a, int* b) {
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+int parition(int arr[], int low, int high) {
+    int pivot = arr[low];
+    int i = low + 1;
+    int j = high;
+
+    while (i <= j) {
+        while (i <= high && arr[i] <= pivot) {
+            i++;
+        }
+        while (arr[j] > pivot) {
+            j--;
+        }
+        if (i < j) swap(&arr[i], &arr[j]);
+    }
+    swap(&arr[low], &arr[j]);
+    return j;
 }
 
