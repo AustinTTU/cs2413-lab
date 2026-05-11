@@ -20,9 +20,34 @@ Notes:
 - Do not use any built-in sorting function.
 */
 
+int smallest(int arr[], int k, int size);
+void swap(int* a, int* b);
+
 void selectionSort(int arr[], int size) {
     // TODO: implement selection sort
     (void)arr;
     (void)size;
+    for (int i = 0; i < size; i++) {
+        int pos = smallest(arr, i, size);
+        swap(&arr[i], &arr[pos]);
+    }
+}
+
+int smallest(int arr[], int k, int size) {
+    int small = arr[k];
+    int pos = k;
+    for (int i = k+1; i < size; i++) {
+        if (small > arr[i]) {
+            small = arr[i];
+            pos = i;
+        }
+    }
+    return pos;
+}
+
+void swap(int* a, int* b) {
+    int temp = *a;
+    *a = *b;
+    *b = temp;
 }
 
